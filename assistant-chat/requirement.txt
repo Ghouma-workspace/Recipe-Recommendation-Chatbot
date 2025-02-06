@@ -1,0 +1,14 @@
+numpy
+scikit-learn
+langchain
+langchain-community
+langchain-core
+langgraph
+datasets
+langchain_groq
+transformers
+sentence-transformers
+faiss-cpu
+flask
+flask-cors
+gunicorn
