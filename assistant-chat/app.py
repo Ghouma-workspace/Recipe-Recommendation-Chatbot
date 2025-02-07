@@ -1,10 +1,9 @@
-# app.py
 from flask import Flask, request, jsonify
 from workflow import predict_custom_agent_answer
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, resources={r"/*": {"origins": "*"}})
 
 @app.route("/chat", methods=["POST"])
 def chat():
@@ -20,8 +19,8 @@ def chat():
     try:
         result = predict_custom_agent_answer(data)
         return jsonify(result)
+        
     except Exception as e:
-        # In production, you might log the error and return a generic error message.
         return jsonify({"error": str(e)}), 500
 
 if __name__ == "__main__":

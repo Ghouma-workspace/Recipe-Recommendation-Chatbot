@@ -1,4 +1,3 @@
-# retrieval.py
 import numpy as np
 from models import embedding_model, index, recipe_docs
 
@@ -7,7 +6,6 @@ def retriever(query: str, k: int = 1):
     Retrieve the top-k most similar documents for a given query.
     """
     if index is None:
-        print("The FAISS index has not been initialized with embeddings.")
         return []
     else:    
         # Encode the query into an embedding

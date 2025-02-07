@@ -16,10 +16,15 @@ const Chatbot = () => {
 
     try {
       // Call your backend API
-      const YOUR_API_URL = "http://127.0.0.1:5000/chat";
+      const YOUR_API_URL = "/chat";
       const response = await axios.post(YOUR_API_URL, {
-        message: input,
+        input: input,
+      }, {
+        headers: {
+          "Content-Type": "application/json",
+        }
       });
+      
 
       // Add bot response to the chat
       setMessages((prev) => [

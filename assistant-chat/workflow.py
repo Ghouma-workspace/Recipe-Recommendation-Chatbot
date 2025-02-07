@@ -1,11 +1,8 @@
-# workflow.py
 import json
 import uuid
 from langgraph.graph import END, START, StateGraph
 from langchain.prompts import PromptTemplate
 from typing_extensions import List, TypedDict
-
-# Import functions from other modules
 from retrieval import retriever
 from grading import grade_documents
 from models import groq_chat
@@ -38,12 +35,12 @@ def decide_retrieval(state: dict) -> dict:
     question = state["question"]
     decision_prompt = PromptTemplate.from_template(
         """You are an AI assistant that helps users with recipes.
-Given the user's question: "{question}", classify it into one of two categories:
-- "retrieve_recipe": if the user is asking about a specific recipe (e.g., "How do I make a chocolate cake?")
-- "find_recipes": if the user is listing ingredients and asking what they can make (e.g., "What can I prepare with flour and eggs?")
+        Given the user's question: "{question}", classify it into one of two categories:
+        - "retrieve_recipe": if the user is asking about a specific recipe (e.g., "How do I make a chocolate cake?")
+        - "find_recipes": if the user is listing ingredients and asking what they can make (e.g., "What can I prepare with flour and eggs?")
 
-Respond with only one of these categories in JSON format: {{"decision": "<category>"}}.
-"""
+        Respond with only one of these categories in JSON format: {{"decision": "<category>"}}.
+        """
     )
     decision_chain = decision_prompt | groq_chat
     decision = decision_chain.invoke({"question": question})
@@ -87,8 +84,6 @@ def web_search(state: dict) -> dict:
     """
     Perform web search to supplement documents.
     """
-    # This function should call your web search tool.
-    # For demonstration, we assume that the tool is available and returns a list of dicts.
     from langchain_community.tools.tavily_search import TavilySearchResults
     from langchain.schema import Document
     web_search_tool = TavilySearchResults()
@@ -96,7 +91,7 @@ def web_search(state: dict) -> dict:
     question = state["question"]
     state["steps"].append("web_search")
     web_results = web_search_tool.invoke({"query": question})
-    # Append web search results to the existing documents
+    
     additional_docs = [
         Document(page_content=d["content"], metadata={"url": d["url"]})
         for d in web_results
@@ -112,7 +107,6 @@ def decide_to_generate(state: dict) -> str:
         return "search"
     return "generate"
 
-# Now, set up the state graph workflow
 def create_workflow():
     workflow = StateGraph(GraphState)
 
